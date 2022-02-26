@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  stremio:
+    container_name: stremio
+    image: stremio
+    build:
+      context: .
+      args:
+        SERVER_VERSION: master
+    ports:
+      - '11470:11470'
+      - '8080:8080'
+    volumes:
+      - ${PWD}/data/:/root/.stremio-server
+    environment:
+      - WEBPACK_MODE=development
+      - WEBPACK_PORT=8080
+      # - EXTRA_ARGS=--no-https
+
+networks:
+  default:
+    name: stremio
+    driver: bridge
