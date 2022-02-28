@@ -6,7 +6,7 @@ WORKDIR /stremio
 ARG SERVER_VERSION=master
 ENV WEBPACK_MODE=development
 ENV WEBPACK_PORT=8080
-ENV EXTRA_ARGS="--allowed-hosts=all"
+ENV EXTRA_ARGS="--allowed-hosts=all --no-https"
 # server port only for reference. it's hardcoded on the server.js file
 ENV SERVER_PORT=11470
 
