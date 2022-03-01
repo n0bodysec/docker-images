@@ -8,6 +8,8 @@ services:
       context: .
       args:
         SERVER_VERSION: master
+        FIX_CORS: 1
+        FIX_UNSUPPORTED_MEDIA: 0
     ports:
       - '11470:11470'
       - '8080:8080'

@@ -2,8 +2,12 @@ FROM node:alpine
 
 WORKDIR /stremio
 
-# args and env vars
+# build args
 ARG SERVER_VERSION=master
+ARG FIX_CORS=1
+ARG FIX_UNSUPPORTED_MEDIA=0
+
+# env vars
 ENV WEBPACK_MODE=development
 ENV WEBPACK_PORT=8080
 ENV EXTRA_ARGS="--allowed-hosts=all --no-https"
@@ -19,8 +23,9 @@ RUN curl http://dl.strem.io/four/${SERVER_VERSION}/server.js --create-dirs -o se
 RUN curl http://dl.strem.io/four/${SERVER_VERSION}/stremio.asar --create-dirs -o server/stremio.asar
 RUN cd stremio-web && npm install
 
-# fix server cors
-RUN sed -i 's/if (ok) enginefs.sendCORSHeaders/if (true) enginefs.sendCORSHeaders/' server/server.js
+# copy and exec patches
+COPY ./patches.sh ./patches.sh
+RUN chmod +x patches.sh && FIX_CORS=${FIX_CORS} FIX_UNSUPPORTED_MEDIA=${FIX_UNSUPPORTED_MEDIA} ./patches.sh
 
 # exposed ports (only for reference, see https://docs.docker.com/engine/reference/builder/#expose)
 EXPOSE ${SERVER_PORT}/tcp ${WEBPACK_PORT}/tcp
