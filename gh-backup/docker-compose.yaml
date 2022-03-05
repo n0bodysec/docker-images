@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  gh-backup:
+    container_name: gh-backup
+    image: gh-backup
+    restart: unless-stopped
+    build:
+      context: .
+      # args: CRON_LINE: '*/1 * * * * run-parts-x ${WORK_DIR}/scripts'
+    volumes:
+      - ./data/:${WORK_DIR}/data
+      - ./scripts/:${WORK_DIR}/scripts
+    environment:
+      WORK_DIR: ${WORK_DIR}
+      GH_TOKEN: ${GH_TOKEN}
+
+networks:
+  default:
+    name: gh-backup
+    driver: bridge
