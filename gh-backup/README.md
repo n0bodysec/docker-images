@@ -35,8 +35,14 @@ TIMESTAMP=$(date +%s)
 USERNAME=n0bodysec
 MAX_BACKUPS=2
 
+# exit immediately if a command exits with a non-zero status.
+# set -e
+
 # backup repositories
 github-backup $USERNAME --token=$GH_TOKEN --all --fork --output-directory=$WORK_DIR/data/$USERNAME/$TIMESTAMP
+
+# delete empty folders
+find $WORK_DIR/data/$USERNAME/ -type d -empty -maxdepth 1 | xargs rm -rf
 
 # delete old backups
 ls -d1 $WORK_DIR/data/$USERNAME/* | head -n -${MAX_BACKUPS} | xargs rm -rf
