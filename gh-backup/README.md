@@ -4,7 +4,6 @@ Automatic github backups using Docker & Python.
 
 ## Table of contents
 
-- [🃏 Features](#-features)
 - [🚀 Deploy](#-deploy)
 - [👍 Acknowledgements](#-acknowledgements)
 - [📜 Notice](#-notice)
