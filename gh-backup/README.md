@@ -39,7 +39,7 @@ MAX_BACKUPS=2
 # set -e
 
 # backup repositories
-github-backup $USERNAME --token=$GH_TOKEN --all --fork --output-directory=$WORK_DIR/data/$USERNAME/$TIMESTAMP
+github-backup $USERNAME --token=$GH_TOKEN --all --bare --fork --output-directory=$WORK_DIR/data/$USERNAME/$TIMESTAMP
 
 # delete empty folders
 find $WORK_DIR/data/$USERNAME/ -type d -empty -maxdepth 1 | xargs rm -rf
