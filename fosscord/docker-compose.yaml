@@ -10,11 +10,8 @@ services:
     ports:
       - '3001-3005:3001-3005'
     volumes:
-      - ./data/:${WORK_DIR:-/srv/fosscord-server}/data/
-      # - type: volume
-      #   source: data
-      #   target: ${WORK_DIR:-/srv/fosscord-server}/
-      #   read_only: true
+      # - ./data/:${WORK_DIR:-/srv/fosscord-server}/data/
+      - data:${WORK_DIR:-/srv/fosscord-server}/
     environment:
       WORK_DIR: ${WORK_DIR:-/srv/fosscord-server}
       DEV_MODE: ${DEV_MODE:-0}
@@ -38,10 +35,11 @@ services:
   #   networks:
   #     - default
   #   volumes:
-  #     - ./data/mariadb:/var/lib/mysql
+  #     - mariadb:/var/lib/mysql
 
-# volumes:
-#   data:
+volumes:
+  data:
+  # mariadb:
 
 networks:
   default:

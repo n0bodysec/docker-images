@@ -23,4 +23,4 @@ Fosscord Server Development Docker
 ## 📜 Notice
 
 - MariaDB integration is not working properly at the moment. For this reason, the mariadb container is disabled.
-- If you wish to use Docker volumes, see the commented volume in `docker-compose.yaml`.
+- If you wish to use Docker bind mount, see the commented volume in `docker-compose.yaml`.

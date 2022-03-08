@@ -28,6 +28,10 @@ RUN npm run setup
 RUN npm install @yukikaze-bot/erlpack
 # RUN npm install mysql --save
 
+# create update script
+RUN printf '#!/bin/sh\n\ngit -C $WORK_DIR/src/ checkout master\ngit -C $WORK_DIR/src/ reset --hard HEAD\ngit -C $WORK_DIR/src/ pull\ncd $WORK_DIR/src/bundle/\nnpm run setup\n' > $WORK_DIR/update.sh
+RUN chmod +x $WORK_DIR/update.sh
+
 # configure entrypoint file
 RUN printf '#!/bin/sh\n\nDEV_MODE=${DEV_MODE:-0}\n\nif [ "$DEV_MODE" -eq 1 ]; then\n    tail -f /dev/null\nelse\n    cd $WORK_DIR/src/bundle/\n    npm run start:bundle\nfi\n' > $WORK_DIR/entrypoint.sh
 RUN chmod +x $WORK_DIR/entrypoint.sh
