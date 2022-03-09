@@ -29,7 +29,7 @@ RUN npm install @yukikaze-bot/erlpack
 # RUN npm install mysql --save
 
 # create update script
-RUN printf '#!/bin/sh\n\ngit -C $WORK_DIR/src/ checkout master\ngit -C $WORK_DIR/src/ reset --hard HEAD\ngit -C $WORK_DIR/src/ pull\ngit -C $WORK_DIR/src/ apply $WORK_DIR/patches/*.patch\ncd $WORK_DIR/src/bundle/\ncat $WORK_DIR/dependencies.txt | xargs -r npm install\nnpm run setup\n' > $WORK_DIR/update.sh
+RUN printf '#!/bin/sh\n\ngit -C $WORK_DIR/src/ checkout master\ngit -C $WORK_DIR/src/ reset --hard HEAD\ngit -C $WORK_DIR/src/ clean -Xdf\ngit -C $WORK_DIR/src/ pull\ngit -C $WORK_DIR/src/ apply $WORK_DIR/patches/*.patch\ncd $WORK_DIR/src/bundle/\ncat $WORK_DIR/dependencies.txt | xargs -r npm install\nnpm run setup\n' > $WORK_DIR/update.sh
 RUN chmod +x $WORK_DIR/update.sh
 
 # configure entrypoint file
