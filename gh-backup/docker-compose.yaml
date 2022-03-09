@@ -9,11 +9,14 @@ services:
       context: .
       # args: CRON_LINE: '*/1 * * * * run-parts-x ${WORK_DIR}/scripts'
     volumes:
-      - ./data/:${WORK_DIR}/data
+      - data:${WORK_DIR}/data
       - ./scripts/:${WORK_DIR}/scripts
     environment:
       WORK_DIR: ${WORK_DIR}
       GH_TOKEN: ${GH_TOKEN}
+
+volumes:
+  data:
 
 networks:
   default:
