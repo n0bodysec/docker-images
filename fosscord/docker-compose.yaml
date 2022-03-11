@@ -6,11 +6,14 @@ services:
     image: fosscord
     restart: on-failure:5
     # depends_on: mariadb
-    build: .
+    build:
+      context: .
+      args:
+        DEV_BUILD: ${DEV_MODE:-0}
     ports:
       - '3001-3005:3001-3005'
     volumes:
-      # - ./data/:${WORK_DIR:-/srv/fosscord-server}/data/
+      - ./dev/:${WORK_DIR:-/srv/fosscord-server}-dev/
       - data:${WORK_DIR:-/srv/fosscord-server}/
     environment:
       WORK_DIR: ${WORK_DIR:-/srv/fosscord-server}

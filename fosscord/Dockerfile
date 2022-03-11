@@ -1,5 +1,8 @@
 FROM node:alpine
 
+# build args
+ARG DEV_BUILD=0
+
 # env vars
 ENV WORK_DIR="/srv/fosscord-server"
 ENV DEV_MODE=0
@@ -24,9 +27,11 @@ RUN git clone https://github.com/fosscord/fosscord-server.git .
 
 # setup and run
 WORKDIR $WORK_DIR/src/bundle
-RUN npm run setup
-RUN npm install @yukikaze-bot/erlpack
-# RUN npm install mysql --save
+RUN if [ "$DEV_BUILD" -eq 0 ]; then \
+	npm run setup \
+	npm install @yukikaze-bot/erlpack \
+	# npm install mysql --save
+	; fi
 
 # create update script
 RUN printf '#!/bin/sh\n\nif [ "$1" = "--clean" ] || [ "$1" = "-c" ]; then git -C $WORK_DIR/src/ clean -Xdf; fi\ngit -C $WORK_DIR/src/ checkout master\ngit -C $WORK_DIR/src/ reset --hard HEAD\ngit -C $WORK_DIR/src/ pull\ngit -C $WORK_DIR/src/ apply $WORK_DIR/patches/*.patch\ncd $WORK_DIR/src/bundle/\ncat $WORK_DIR/dependencies.txt | xargs -r npm install\nnpm run setup\n' > $WORK_DIR/update.sh
