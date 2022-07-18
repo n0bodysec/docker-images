@@ -1,11 +1,7 @@
 FROM node:alpine
 
-# build args
-ARG DEV_BUILD=0
-
 # env vars
-ENV WORK_DIR="/srv/fosscord-server"
-ENV DEV_MODE=0
+ENV WORK_DIR=/srv/fosscord-server
 ENV HTTP_PORT=3001
 ENV WS_PORT=3002
 ENV CDN_PORT=3003
@@ -16,30 +12,12 @@ ENV ADMIN_PORT=3005
 EXPOSE ${HTTP_PORT}/tcp ${WS_PORT}/tcp ${CDN_PORT}/tcp ${RTC_PORT}/tcp ${ADMIN_PORT}/tcp
 
 # install required apps
-RUN apk add --no-cache --update git python2 py-pip make build-base
+RUN apk add --no-cache --update git python3 py-pip make build-base
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# optionl: packages for debugging/development
-RUN apk add --no-cache sqlite
+# Run as non-root user
+# RUN adduser -D fosscord
+# USER fosscord
 
-# download fosscord-server
-WORKDIR $WORK_DIR/src
-RUN git clone https://github.com/fosscord/fosscord-server.git .
-
-# setup and run
-WORKDIR $WORK_DIR/src/bundle
-RUN if [ "$DEV_BUILD" -eq 0 ]; then \
-	npm run setup \
-	npm install @yukikaze-bot/erlpack \
-	# npm install mysql --save
-	; fi
-
-# create update script
-RUN printf '#!/bin/sh\n\nif [ "$1" = "--clean" ] || [ "$1" = "-c" ]; then git -C $WORK_DIR/src/ clean -Xdf; fi\ngit -C $WORK_DIR/src/ checkout master\ngit -C $WORK_DIR/src/ reset --hard HEAD\ngit -C $WORK_DIR/src/ pull\ngit -C $WORK_DIR/src/ apply $WORK_DIR/patches/*.patch\ncd $WORK_DIR/src/bundle/\ncat $WORK_DIR/dependencies.txt | xargs -r npm install\nnpm run setup\n' > $WORK_DIR/update.sh
-RUN chmod +x $WORK_DIR/update.sh
-
-# configure entrypoint file
-RUN printf '#!/bin/sh\n\nDEV_MODE=${DEV_MODE:-0}\n\nif [ "$DEV_MODE" -eq 1 ]; then\n    tail -f /dev/null\nelse\n    cd $WORK_DIR/src/bundle/\n    npm run start:bundle\nfi\n' > $WORK_DIR/entrypoint.sh
-RUN chmod +x $WORK_DIR/entrypoint.sh
-
-WORKDIR $WORK_DIR
-ENTRYPOINT ["./entrypoint.sh"]
+WORKDIR $WORK_DIR/
+ENTRYPOINT ["npm", "--prefix", "src/bundle", "run", "start:bundle"]

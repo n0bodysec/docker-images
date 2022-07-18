@@ -1,3 +1,9 @@
+# secrets
 .env
-data/
-dev/
+
+# instance data, source and patches
+instance/fosscord/*
+!instance/fosscord/scripts/
+
+# mariadb files
+instance/mariadb/

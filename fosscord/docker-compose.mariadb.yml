@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+
+  fosscord:
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:latest
+    restart: on-failure:5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-secr3tpassw0rd}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-fosscord}
+      MYSQL_USER: ${MYSQL_USER:-fosscord}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password1}
+    networks:
+      - default
+    volumes:
+      - ./instance/mariadb/:/var/lib/mysql
