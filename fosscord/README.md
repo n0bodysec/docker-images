@@ -37,4 +37,4 @@ docker compose up -d
 ## 📜 Notice
 
 - MariaDB integration is not working properly at the moment. For this reason, the mariadb container is configured on a separate compose file.
-- It is possible to use docker bind mount instead of docker volumes, but you need to rewrite `docker-compose.override.yml` accordingly.
+- It is possible to use docker named volumes instead of bind mount, but you need to rewrite `docker-compose.override.yml` accordingly.
