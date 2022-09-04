@@ -2,7 +2,7 @@
 
 Docker image for stremio-server (no-cors) and stremio-web.
 
-Feel free to edit the `docker-compose.yaml` to update the webpack port.
+Feel free to edit the `docker-compose.yml` to update the webpack port.
 
 ## Table of contents
 
@@ -17,8 +17,8 @@ Feel free to edit the `docker-compose.yaml` to update the webpack port.
 
 ## 🚀 Deploy
 
-1. Edit the `docker-compose.yaml` file to suit your needs (e.g. webpack port).
-2. Run `docker-compose up -d`.
+1. Edit the `docker-compose.yml` file to suit your needs (e.g. webpack port).
+2. Run `docker compose up -d`.
 
 ## 📜 Notice
 

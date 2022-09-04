@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   synapse:
-    # first run: docker-compose run synapse generate && docker-compose down && docker-compose --profile element up -d
+    # first run: docker compose run synapse generate && docker compose down && docker compose --profile element up -d
     container_name: synapse
     image: matrixdotorg/synapse:latest
     restart: unless-stopped

@@ -15,7 +15,7 @@ This is my personal collection of docker scripts for creating images and contain
 
 1. Clone this repo.
 2. `cd` to the desired folder.
-3. Run `docker-compose up -d`.
+3. Run `docker compose up -d`.
 
 ## 📝 Changelog
 

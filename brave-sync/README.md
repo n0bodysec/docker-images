@@ -20,9 +20,9 @@ Self-hosted lightweight [Brave Sync Server](https://github.com/brave/go-sync) Do
 
 1. Clone this repo and `cd` to it: `git clone ... && cd docker-images/brave-sync`.
 2. Clone **go-sync** source code: `git clone https://github.com/brave/go-sync data/src`.
-3. (**Optional**) Edit the `docker-compose.yaml` file to suit your needs.
+3. (**Optional**) Edit the `docker-compose.yml` file to suit your needs.
 4. (**Optional**) Copy `.env.example` to `.env` and edit it accordingly.
-5. Run `docker-compose up -d`.
+5. Run `docker compose up -d`.
 6. (**First time only**) run `docker exec -it brave-sync sh -c 'aws dynamodb create-table --cli-input-json file:///srv/go-sync/schema/dynamodb/table.json --endpoint-url "$AWS_ENDPOINT" --region "$AWS_REGION"'`.
 
 ## 📜 Notice

@@ -11,10 +11,10 @@ Automatic github backups using Docker & Python.
 
 ## 🚀 Deploy
 
-1. Edit the `docker-compose.yaml` file to suit your needs (e.g. gh token).
+1. Edit the `docker-compose.yml` file to suit your needs (e.g. gh token).
 2. Copy `.env.example` to `.env` and edit it accordingly.
 3. Add your desired scripts to the `scripts` folder (create one if it does not exist).
-4. Run `docker-compose up -d`.
+4. Run `docker compose up -d`.
 
 ## 👍 Acknowledgements
 
