@@ -1,27 +1,18 @@
 version: '3.9'
 
 services:
-
   fosscord:
-    container_name: fosscord
     image: fosscord
-    restart: on-failure:5
+    restart: unless-stopped
     build: .
-    ports:
-      - '3001-3005:3001-3005'
+    ports: [ '3001-3003:3001-3003' ]
     volumes:
-      - ./instance/fosscord/:/srv/fosscord-server/
+      - './data/fosscord/:/srv/fosscord-server/'
+      - './data/scripts:/srv/scripts/:ro'
     environment:
       THREADS: ${THREADS:-1}
-      DATABASE: ${DATABASE:-../../data/database.db}
-      STORAGE_LOCATION: ${STORAGE_LOCATION:-../../data/files/}
+      DATABASE: ${DATABASE:-../data/database.db}
+      STORAGE_LOCATION: ${STORAGE_LOCATION:-../data/files/}
       HTTP_PORT: 3001
       WS_PORT: 3002
       CDN_PORT: 3003
-      RTC_PORT: 3004
-      ADMIN_PORT: 3005
-
-networks:
-  default:
-    name: fosscord
-    driver: bridge

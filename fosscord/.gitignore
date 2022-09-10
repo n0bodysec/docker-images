@@ -2,8 +2,5 @@
 .env
 
 # instance data, source and patches
-instance/fosscord/*
-!instance/fosscord/scripts/
-
-# mariadb files
-instance/mariadb/
+data/*
+!data/scripts/

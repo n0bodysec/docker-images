@@ -16,25 +16,23 @@ Fosscord Server Development Docker
 
 ## 🚀 Deploy
 
-1. Create a `docker-compose.override.yml` file and edit it to suit your needs.
+1. Create a `docker-compose.override.yml` file and edit it to suit your needs (***optional***).
 2. Copy `.env.example` to `.env` and edit it accordingly.
-3. Create folder structure (`instance/fosscord/{data,patches,src}`).
-4. Clone `fosscord-server` into `instance/fosscord/src`.
-5. Run `instance/scripts/update.sh` or setup Fosscord manually.
-6. Run `docker compose up -d`.
+3. Clone `fosscord-server` into `data/fosscord/src`.
+5. Run `docker compose run fosscord sh ../scripts/update.sh` or setup Fosscord manually.
+6. Setup the MariaDB container: `docker compose -f docker-compose.yml -f docker-compose.mariadb.yml up mariadb` (***optional***).
+7. Run `docker compose up -d`.
 
 ```sh
 git clone https://github.com/n0bodysec/docker-images.git
 cd docker-images/fosscord/
 cp .env.example .env
-# edit .env and docker-compose.yml to suit your needs
-mkdir -p instance/fosscord/{data,patches,src}
-git clone https://github.com/fosscord/fosscord-server.git instance/fosscord/src/
-docker compose -f docker-compose.yml -f docker-compose.cfg.yml up
+git clone https://github.com/fosscord/fosscord-server.git data/fosscord/src/
+docker compose run fosscord sh ../scripts/update.sh
 docker compose up -d
 ```
 
 ## 📜 Notice
 
 - MariaDB integration is not working properly at the moment. For this reason, the mariadb container is configured on a separate compose file.
-- It is possible to use docker named volumes instead of bind mount, but you need to rewrite `docker-compose.override.yml` accordingly.
+- It is possible to use docker named volumes instead of bind mount, but you need to edit `docker-compose.override.yml` accordingly.

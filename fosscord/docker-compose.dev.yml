@@ -1,7 +1,0 @@
-version: '3.9'
-
-services:
-
-  fosscord:
-    user: 0:0
-    entrypoint: [ 'tail', '-f', '/dev/null' ]
