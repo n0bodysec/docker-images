@@ -1,2 +1,3 @@
 @yukikaze-bot/erlpack
 mysql
+sqlite3
