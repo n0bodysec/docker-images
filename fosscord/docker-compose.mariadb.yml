@@ -8,9 +8,5 @@ services:
   mariadb:
     image: mariadb:latest
     restart: unless-stopped
-    environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-secr3tpassw0rd}
-      MARIADB_DATABASE: ${MARIADB_DATABASE:-fosscord}
-      MARIADB_USER: ${MARIADB_USER:-fosscord}
-      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-password}
+    env_file: [ '.env' ]
     volumes: [ './data/mariadb/:/var/lib/mysql' ]
