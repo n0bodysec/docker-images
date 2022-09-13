@@ -1,3 +1,5 @@
 @yukikaze-bot/erlpack
 mysql
 sqlite3
+bcrypt
+canvas
