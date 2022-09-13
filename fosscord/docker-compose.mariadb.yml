@@ -2,11 +2,12 @@ version: '3.9'
 
 services:
   fosscord:
-    depends_on:
-      - mariadb
+    depends_on: [ 'mariadb' ]
+    command: sh -c 'wait-for mariadb:3306 -- npm --prefix src run start:bundle'
 
   mariadb:
     image: mariadb:latest
     restart: unless-stopped
+    # ports: [ '3306:3306' ]
     env_file: [ '.env' ]
     volumes: [ './data/mariadb/:/var/lib/mysql' ]
