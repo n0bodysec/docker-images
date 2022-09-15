@@ -14,9 +14,9 @@ services:
       - ./www:/usr/share/nginx/html:ro
       - ./templates/yukon.conf.template:/etc/nginx/conf.d/yukon.conf.template
     command: [
-        "dockerize",
-        "-template", "/etc/nginx/conf.d/yukon.conf.template:/etc/nginx/conf.d/yukon.conf",
-        "nginx", "-g", "daemon off;"
+        'dockerize',
+        '-template', '/etc/nginx/conf.d/yukon.conf.template:/etc/nginx/conf.d/yukon.conf',
+        'nginx', '-g', 'daemon off;'
       ]
 
   server:
@@ -36,10 +36,10 @@ services:
       - ./yukon-server/src:/srv/yukon-server/
       - ./templates/config.json.template:/srv/templates/config.json.template
     command: [
-        "dockerize",
-        "-template", "/srv/templates/config.json.template:/srv/yukon-server/config/config.json",
-        "-wait", "tcp://${MARIADB_HOST}:${MARIADB_PORT}", "-timeout", "20s",
-        "npx", "pm2-runtime", "start", "ecosystem.config.js"
+        'dockerize',
+        '-template', '/srv/templates/config.json.template:/srv/yukon-server/config/config.json',
+        '-wait', 'tcp://${MARIADB_HOST}:${MARIADB_PORT}', '-timeout', '20s',
+        'npx', 'pm2-runtime', 'start', 'ecosystem.config.js'
       ]
 
   mariadb:
