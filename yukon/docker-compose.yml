@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  client:
+    image: yukon/client
+    build: ./yukon
+    restart: unless-stopped
+    ports: [ '${WEB_PORT}:80' ]
+    networks: [ 'default' ]
+    depends_on: [ 'server' ]
+    env_file: [ '.env' ]
+    volumes:
+      - /dev/null:/etc/nginx/conf.d/default.conf:ro
+      - ./www:/usr/share/nginx/html:ro
+      - ./templates/yukon.conf.template:/etc/nginx/conf.d/yukon.conf.template
+    command: [
+        "dockerize",
+        "-template", "/etc/nginx/conf.d/yukon.conf.template:/etc/nginx/conf.d/yukon.conf",
+        "nginx", "-g", "daemon off;"
+      ]
+
+  server:
+    image: yukon/server
+    build:
+      context: ./yukon-server
+      args:
+        PUID: ${PUID:-1000}
+        PGID: ${PGID:-1000}
+    restart: unless-stopped
+    # ports: [ '${GAME_LOGIN_PORT}:${GAME_LOGIN_PORT}', '${GAME_BLIZZARD_PORT}:${GAME_BLIZZARD_PORT}' ]
+    networks: [ 'default', 'db' ]
+    depends_on: [ 'mariadb' ]
+    env_file: [ '.env' ]
+    volumes:
+      - ./yukon-server/ssl:/etc/ssl/yukon:ro
+      - ./yukon-server/src:/srv/yukon-server/
+      - ./templates/config.json.template:/srv/templates/config.json.template
+    command: [
+        "dockerize",
+        "-template", "/srv/templates/config.json.template:/srv/yukon-server/config/config.json",
+        "-wait", "tcp://${MARIADB_HOST}:${MARIADB_PORT}", "-timeout", "20s",
+        "npx", "pm2-runtime", "start", "ecosystem.config.js"
+      ]
+
+  mariadb:
+    image: mariadb:latest
+    restart: unless-stopped
+    # ports: [ '${MARIADB_PORT}:3306' ]
+    networks: [ 'db' ]
+    env_file: [ '.env' ]
+    volumes:
+      - ./.data:/var/lib/mysql
+      - ./yukon-server/src/yukon.sql:/docker-entrypoint-initdb.d/yukon.sql:ro
+
+  node:
+    image: node:alpine
+    profiles: [ 'dev' ]
+    working_dir: /srv/yukon
+    command: [ 'sh' ]
+    volumes:
+      - ./yukon/src:/srv/yukon/client
+      - ./yukon-server/src:/srv/yukon/server
+
+networks:
+  db:
+    external: false
