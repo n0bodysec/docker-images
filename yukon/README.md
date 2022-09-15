@@ -25,11 +25,11 @@ Yukon CPPS Emulator Docker Image
 git clone https://github.com/wizguin/yukon.git yukon/src
 git clone https://github.com/wizguin/yukon-server.git yukon-server/src
 docker compose run node sh -c "cd client && npm i && npm run build && cd ../server && npm i && npm run build"
-git clone <assets-repo-url> www/data/assets
+git clone <assets-repo-url> www/assets
 cp -r yukon/src/assets/ www
 cp -r yukon/src/dist/* www
 mkdir -p www/assets/scripts/lib/ruffle
-wget -O - https://github.com/ruffle-rs/ruffle/releases/download/nightly-2022-09-14/ruffle-nightly-2022_09_14-web-selfhosted.zip | (cd www/assets/scripts/lib/ruffle && unzip -)
+wget -qO- https://github.com/ruffle-rs/ruffle/releases/download/nightly-2022-09-14/ruffle-nightly-2022_09_14-web-selfhosted.zip | busybox unzip -d www/assets/scripts/lib/ruffle -
 docker compose up -d
 ```
 
