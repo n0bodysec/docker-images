@@ -1,26 +1,14 @@
-version: '3.8'
+version: '3.9'
 
 services:
   stremio:
-    container_name: stremio
     image: stremio
-    build:
-      context: .
-      args:
-        SERVER_VERSION: master
-        FIX_CORS: 1
-        FIX_UNSUPPORTED_MEDIA: 0
+    build: .
     ports:
       - '11470:11470'
       - '8080:8080'
     volumes:
       - ./data/:/root/.stremio-server
     environment:
-      - WEBPACK_MODE=development
-      - WEBPACK_PORT=8080
-      # - EXTRA_ARGS=
-
-networks:
-  default:
-    name: stremio
-    driver: bridge
+      RUN_PATCHES: 1
+      NO_CORS: 1
