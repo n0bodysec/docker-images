@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ ${RUN_PATCHES:-0} -eq 1 ]]; then
+if [[ ${APPLY_PATCHES:-0} -eq 1 ]]; then
 	echo "Applying patches..."
 	chmod +x ./patches.sh
 	sh ./patches.sh

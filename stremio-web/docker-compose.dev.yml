@@ -2,7 +2,8 @@ version: '3.9'
 
 services:
   stremio:
-    image: n0bodysec/stremio
+    image: stremio
+    build: .
     ports:
       - '11470:11470'
       - '8080:8080'
