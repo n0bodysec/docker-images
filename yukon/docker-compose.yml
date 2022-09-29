@@ -21,11 +21,7 @@ services:
 
   server:
     image: yukon/server
-    build:
-      context: ./server
-      args:
-        PUID: ${PUID:-1000}
-        PGID: ${PGID:-1000}
+    build: ./server
     restart: unless-stopped
     # ports: [ '${GAME_LOGIN_PORT}:${GAME_LOGIN_PORT}', '${GAME_BLIZZARD_PORT}:${GAME_BLIZZARD_PORT}' ]
     networks: [ 'default', 'db' ]
@@ -87,8 +83,6 @@ services:
         wget -qO res.json https://api.github.com/repos/ruffle-rs/ruffle/releases
         node -p "require('./res.json').flatMap(x => x.assets).find(y => y.browser_download_url.includes('selfhosted')).browser_download_url;" | xargs -n1 wget -qO ruffle.zip
         unzip -d www/assets/scripts/lib/ruffle ruffle.zip
-        echo "Chowning all files..."
-        chown -R $$PUID:$$PGID *
 
 networks:
   db:
