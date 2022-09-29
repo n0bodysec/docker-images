@@ -17,5 +17,5 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 # run as non-root user
 USER node
 
-WORKDIR /srv/yukon-server
+WORKDIR /srv/server
 CMD ["npm", "run", "start"]

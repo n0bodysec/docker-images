@@ -1,12 +1,12 @@
 # private data
 .data/
 .env
-yukon-server/ssl/*
-!yukon-server/ssl/.gitkeep
+server/ssl/*
+!server/ssl/.gitkeep
 
 # yukon sources
-yukon/src/
-yukon-server/src/
+client/src/
+server/src/
 
 # nginx files
 www/*
