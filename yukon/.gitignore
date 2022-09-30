@@ -1,13 +1,11 @@
-# private data
+# Private Data
 .data/
 .env
-server/ssl/*
-!server/ssl/.gitkeep
 
-# yukon sources
-client/src/
-server/src/
+# Yukon Sources
+client/
+server/
 
-# nginx files
+# Nginx root files (client container)
 www/*
 !www/.gitkeep
