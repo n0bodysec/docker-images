@@ -14,14 +14,12 @@ Yukon CPPS Emulator Docker Image
 If you want to deploy Yukon with almost no effort, follow the next steps:
 
 1. Copy `.env.example` to `.env` and edit it accordingly.
-2. Run the included `builder` compose service.
-3. Copy the contents of the `assets` **repository** into `www` folder.
-4. Run `docker compose up -d`.
+	> Please make sure to set **ASSETS_TAR_URL** correctly.
+2. Run `docker compose up -d`.
 
 ```sh
 cp .env.example .env
 docker compose up builder
-git clone <assets-repo-url> www/assets
 docker compose up -d
 ```
 
