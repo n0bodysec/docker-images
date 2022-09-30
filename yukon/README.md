@@ -16,7 +16,8 @@ If you want to deploy Yukon with almost no effort, follow the next steps:
 
 1. Copy `.env.example` to `.env` and edit it accordingly.
 	> Please make sure to set **ASSETS_TAR_URL** correctly.
-2. Run `docker compose up -d`.
+2. Run the `builder` compose service.
+3. Run `docker compose up -d`.
 
 ```sh
 cp .env.example .env
