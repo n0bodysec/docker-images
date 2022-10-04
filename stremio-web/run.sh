@@ -11,4 +11,5 @@ else
 fi
 
 http-server web/ -p 8080 -d false &
+http-server shell/ -p 8081 -d false &
 node server/server.js

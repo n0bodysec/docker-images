@@ -1,6 +1,6 @@
 # stremio-web
 
-This docker image contains a built copy of the open source [stremio-web](https://github.com/Stremio/stremio-web/) and a copy of the closed source [stremio-server](http://dl.strem.io/four/master/server.js).
+This docker image contains a built copy of the open source [stremio-web](https://github.com/Stremio/stremio-web/), a copy of the stremio-shell web ui and a copy of the closed source [stremio-server](http://dl.strem.io/four/master/server.js).
 
 With this image, you can quickly deploy a ready-to-use stremio-web client and server.
 
@@ -50,5 +50,5 @@ docker run -e APPLY_PATCHES=1 n0bodysec/stremio
 | NO_CORS               	| Do no check CORS in the SERVER      	| server.js  	|
 
 For more environment variables, please check the `server.js` file.  
-Undocumented env vars: `APPDATA`, `APP_PATH`, `BLUEBIRD_DEBUG`, `BLUEBIRD_LONG_STACK_TRACES`, `BLUEBIRD_WARNINGS`, `BLUEBIRD_W_FORGOTTEN_RETURN`, `CASTING_DISABLED`, `COLORTERM`, `DEBUG`, `DEBUG_COLORS`, `DEBUG_COLORS`, `DEBUG_DEPTH`, `DEBUG_FD`, `DEBUG_MIME`, `DEBUG_SHOW_HIDDEN`, `DISABLE_CACHING`, `DISABLE_CACHING`, `FFMPEG_BIN`, `FFMPEG_DEBUG`, `FFSPLIT_DEBUG`, `FORCE_COLOR`, `HOME`, `HTTPS_CERT_ENDPOINT`, `NODE_DEBUG`, `NODE_ENV`, `NO_CORS`, `NO_DEPRECATION`, `OPEN`, `OSTYPE`, `PATHEXT`, `PORT`, `READABLE_STREAM`, `SUDO_USER`, `SystemRoot`, `TEMP`, `TERM`, `TMP`, `TMPDIR`, `TRACE_DEPRECATION`, `TV_ENV`, `WEBUI_LOCATION`, `YTDL_NO_UPDATE`, `npm_config_arch`, `npm_config_platform`, 
+Undocumented env vars: `APPDATA`, `APP_PATH`, `BLUEBIRD_DEBUG`, `BLUEBIRD_LONG_STACK_TRACES`, `BLUEBIRD_WARNINGS`, `BLUEBIRD_W_FORGOTTEN_RETURN`, `CASTING_DISABLED`, `COLORTERM`, `DEBUG`, `DEBUG_COLORS`, `DEBUG_COLORS`, `DEBUG_DEPTH`, `DEBUG_FD`, `DEBUG_MIME`, `DEBUG_SHOW_HIDDEN`, `DISABLE_CACHING`, `DISABLE_CACHING`, `FFMPEG_BIN`, `FFMPEG_DEBUG`, `FFSPLIT_DEBUG`, `FORCE_COLOR`, `HOME`, `HTTPS_CERT_ENDPOINT`, `NODE_DEBUG`, `NODE_ENV`, `NO_DEPRECATION`, `OPEN`, `OSTYPE`, `PATHEXT`, `PORT`, `READABLE_STREAM`, `SUDO_USER`, `SystemRoot`, `TEMP`, `TERM`, `TMP`, `TMPDIR`, `TRACE_DEPRECATION`, `TV_ENV`, `WEBUI_LOCATION`, `YTDL_NO_UPDATE`, `npm_config_arch`, `npm_config_platform`, 
 `windir`
