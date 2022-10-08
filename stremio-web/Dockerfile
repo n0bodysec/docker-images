@@ -11,17 +11,17 @@ WORKDIR /srv/stremio
 RUN apk add --no-cache git wget dos2unix
 RUN git clone https://github.com/Stremio/stremio-web.git
 
-WORKDIR /srv/stremio/scripts
+WORKDIR /srv/stremio/dist
 COPY patches.sh run.sh ./
-RUN dos2unix *.sh
+RUN chmod +x *.sh && dos2unix *.sh
 
-WORKDIR /srv/stremio/stremio-shell
+WORKDIR /srv/stremio/dist/shell
 RUN wget -mkEpnp -nH https://staging.strem.io || true
 
 WORKDIR /srv/stremio/stremio-web
-RUN npm ci && npm run build
+RUN npm ci && npm run build && cp -r build ../dist/web
 
-WORKDIR /srv/stremio/stremio-server
+WORKDIR /srv/stremio/dist/server
 RUN wget $DOWNLOAD_URL/server.js $DOWNLOAD_URL/stremio.asar && cp server.js server.js.bak
 
 ##########################################################################
@@ -31,12 +31,8 @@ FROM node:alpine
 
 WORKDIR /srv/stremio
 RUN apk add --no-cache ffmpeg
-COPY --from=builder /srv/stremio/stremio-shell ./shell
-COPY --from=builder /srv/stremio/stremio-web/build ./web
-COPY --from=builder /srv/stremio/stremio-server ./server
-COPY --from=builder /srv/stremio/scripts ./
-RUN chmod +x ./patches.sh ./run.sh && \
-	npm install -g http-server
+COPY --from=builder /srv/stremio/dist ./
+RUN npm install -g http-server
 
 # Expose default ports
 EXPOSE 11470 8080 8081

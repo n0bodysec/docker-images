@@ -9,7 +9,5 @@ services:
       - '8081:8081'
     volumes:
       - ./data/:/root/.stremio-server
-    environment:
-      APPLY_PATCHES: ${APPLY_PATCHES:-1}
-      FIX_UNSUPPORTED_MEDIA: ${FIX_UNSUPPORTED_MEDIA:-1}
-      NO_CORS: ${NO_CORS:-1}
+    env_file:
+      - .env
