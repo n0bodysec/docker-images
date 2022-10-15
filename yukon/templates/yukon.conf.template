@@ -2,7 +2,7 @@ server {
    server_name {{ (parseUrl .Env.WEB_HOSTNAME).Host }};
 
    root /usr/share/nginx/html;
-   index index.html index.htm index.php;
+   index index.html index.htm;
 
    location /world/login {
       proxy_pass {{ .Env.GAME_ADDRESS }}:{{ .Env.GAME_LOGIN_PORT }};
