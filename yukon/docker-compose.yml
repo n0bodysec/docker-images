@@ -69,8 +69,8 @@ services:
         apk add --no-cache git
         mkdir -p www/assets/scripts/lib/ruffle .data/ssl
         wget -qO .data/dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/$$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$$DOCKERIZE_VERSION.tar.gz
-        git clone https://github.com/wizguin/yukon.git client
-        git clone https://github.com/wizguin/yukon-server.git server
+        git clone -b $$CLIENT_BRANCH https://github.com/wizguin/yukon.git client
+        git clone -b $$SERVER_BRANCH https://github.com/wizguin/yukon-server.git server
         cd client && npm ci && npm run build
         cd ../server && npm ci && npm run build
         cd .. && cp -r client/assets www && cp -r client/dist/* www

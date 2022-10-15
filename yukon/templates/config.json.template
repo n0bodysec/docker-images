@@ -10,7 +10,8 @@
         "password": "{{ .Env.MARIADB_PASSWORD }}",
         "database": "{{ .Env.MARIADB_DATABASE }}",
         "dialect": "mysql",
-        "debug": false
+        "debug": false,
+        "logQueryParameters": false
     },
     "socketio": {
         "https": {{ .Env.GAME_SOCKETIO_SSL }},
@@ -23,6 +24,13 @@
     "cors": {
         "origin": "{{ .Env.WEB_HOSTNAME }}:{{ .Env.WEB_PORT }}"
     },
+    "rateLimit": {
+        "enabled": {{ .Env.GAME_ENABLE_RATELIMITS }},
+        "addressConnectsPerSecond": 5,
+        "addressEventsPerSecond": 50,
+        "userEventsPerSecond": 10,
+        "ipAddressHeader": false
+    },
     "worlds": {
         "Login": {
             "host": "{{ .Env.GAME_LOGIN_HOST }}",
@@ -31,15 +39,11 @@
         "Blizzard": {
             "host": "{{ .Env.GAME_BLIZZARD_HOST }}",
             "port": {{ .Env.GAME_BLIZZARD_PORT }},
-            "maxUsers": 300
+            "maxUsers": {{ .Env.GAME_BLIZZARD_MAX_USERS }}
         }
     },
-    "rateLimit": {
-        "addressEventsPerSecond": 50,
-        "userEventsPerSecond": 10,
-        "ipAddressHeader": false
-    },
     "game": {
+        "preferredSpawn": {{ .Env.GAME_PREFERRED_SPAWN }},
         "iglooIdOffset": 2000
     }
 }
