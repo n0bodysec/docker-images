@@ -1,0 +1,92 @@
+version: '3.9'
+
+services:
+  client:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports: [ '${WEB_PORT}:80' ]
+    networks: [ 'default' ]
+    depends_on: [ 'server' ]
+    command:
+      - /bin/sh
+      - -c
+      - |
+        tar -C /usr/local/bin -xzvf /root/dockerize.tar.gz
+        dockerize -template /etc/nginx/conf.d/yukon.conf.template:/etc/nginx/conf.d/yukon.conf nginx "-g daemon off;"
+    environment:
+      WEB_HOSTNAME: ${WEB_HOSTNAME}
+      GAME_ADDRESS: ${GAME_ADDRESS}
+      GAME_LOGIN_PORT: ${GAME_LOGIN_PORT}
+      GAME_BLIZZARD_PORT: ${GAME_BLIZZARD_PORT}
+    volumes:
+      - ./.data/dockerize.tar.gz:/root/dockerize.tar.gz:ro
+      - /dev/null:/etc/nginx/conf.d/default.conf:ro
+      - ./www:/usr/share/nginx/html:ro
+      - ./templates/yukon.conf.template:/etc/nginx/conf.d/yukon.conf.template:ro
+
+  server:
+    image: node:alpine
+    restart: unless-stopped
+    # ports: [ '${GAME_LOGIN_PORT}:${GAME_LOGIN_PORT}', '${GAME_BLIZZARD_PORT}:${GAME_BLIZZARD_PORT}' ]
+    networks: [ 'default', 'db' ]
+    depends_on: [ 'mariadb' ]
+    env_file: [ '.env' ]
+    working_dir: /srv/server
+    command:
+      - /bin/sh
+      - -c
+      - |
+        tar -C /usr/local/bin -xzvf /root/dockerize.tar.gz
+        dockerize -template /srv/templates/config.json.template:/srv/server/config/config.json \
+        -wait tcp://${MARIADB_HOST}:${MARIADB_PORT} -timeout 20s npx pm2-runtime start ecosystem.config.js
+    volumes:
+      - ./.data/dockerize.tar.gz:/root/dockerize.tar.gz:ro
+      - ./.data/ssl:/etc/ssl/yukon:ro
+      - ./server:/srv/server/
+      - ./templates/config.json_develop.template:/srv/templates/config.json.template:ro
+
+  mariadb:
+    image: mariadb:latest
+    restart: unless-stopped
+    # ports: [ '${MARIADB_PORT}:3306' ]
+    networks: [ 'db' ]
+    env_file: [ '.env' ]
+    volumes:
+      - ./.data/mariadb:/var/lib/mysql
+      - ./server/yukon.sql:/docker-entrypoint-initdb.d/yukon.sql:ro
+
+  builder:
+    image: node:alpine
+    profiles: [ 'dev' ]
+    working_dir: /srv/yukon
+    env_file: [ '.env' ]
+    volumes:
+      - ./:/srv/yukon
+    command:
+      - /bin/sh
+      - -c
+      - |
+        apk add --no-cache git
+        mkdir -p www/assets/scripts/lib/ruffle .data/ssl
+        wget -qO .data/dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/$$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$$DOCKERIZE_VERSION.tar.gz
+        git clone -b develop https://github.com/wizguin/yukon.git client
+        git clone -b develop https://github.com/wizguin/yukon-server.git server
+        cd client && npm ci && npm run build
+        cd ../server && npm ci && npm run build
+        cd .. && cp -r client/assets www && cp -r client/dist/* www
+        wget -qO /tmp/res.json https://api.github.com/repos/ruffle-rs/ruffle/releases
+        node -p "require('/tmp/res.json').flatMap(x => x.assets).find(y => y.browser_download_url.includes('selfhosted')).browser_download_url;" | xargs -n1 wget -qO /tmp/ruffle.zip
+        unzip -d www/assets/scripts/lib/ruffle /tmp/ruffle.zip
+        wget -qO- $$ASSETS_TAR_URL | tar --strip-components=1 -C www/assets -xzvf-
+
+  node:
+    image: node:alpine
+    profiles: [ 'dev' ]
+    working_dir: /srv/yukon
+    command: [ 'sh' ]
+    volumes:
+      - ./client:/srv/yukon/client
+      - ./server:/srv/yukon/server
+
+networks:
+  db:
