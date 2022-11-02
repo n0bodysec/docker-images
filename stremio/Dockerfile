@@ -12,7 +12,7 @@ RUN apk add --no-cache git wget dos2unix
 RUN git clone https://github.com/Stremio/stremio-web.git
 
 WORKDIR /srv/stremio/dist
-COPY patches.sh run.sh ./
+COPY files/*.sh ./
 RUN chmod +x *.sh && dos2unix *.sh
 
 WORKDIR /srv/stremio/dist/shell
