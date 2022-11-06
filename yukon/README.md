@@ -15,7 +15,7 @@ Yukon is an HTML5 CPPS written in JavaScript. This repository contains a series 
 If you want to deploy Yukon with almost no effort, follow the next steps:
 
 1. Copy `.env.example` to `.env` and edit it accordingly.
-	> Please make sure to set **ASSETS_TAR_URL** correctly.
+	> Please make sure to set **ASSETS_REPOSITORY** correctly.
 2. Run the `builder` compose service.
 3. Run `docker compose up -d`.
 

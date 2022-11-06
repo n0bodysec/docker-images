@@ -4,6 +4,11 @@ server {
    root /usr/share/nginx/html;
    index index.html index.htm;
 
+   # block files/folders starting with a dot (e.g. .git)
+   location ~ /\. {
+      deny all;
+   }
+
    location /world/login {
       proxy_pass {{ .Env.GAME_ADDRESS }}:{{ .Env.GAME_LOGIN_PORT }};
       proxy_set_header Upgrade $http_upgrade;

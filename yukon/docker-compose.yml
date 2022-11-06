@@ -77,7 +77,8 @@ services:
         wget -qO /tmp/res.json https://api.github.com/repos/ruffle-rs/ruffle/releases
         node -p "require('/tmp/res.json').flatMap(x => x.assets).find(y => y.browser_download_url.includes('selfhosted')).browser_download_url;" | xargs -n1 wget -qO /tmp/ruffle.zip
         unzip -d www/assets/scripts/lib/ruffle /tmp/ruffle.zip
-        wget -qO- $$ASSETS_TAR_URL | tar --strip-components=1 -C www/assets -xzvf-
+        git clone $$ASSETS_REPOSITORY /tmp/assets
+        mv /tmp/assets/* /tmp/assets/.[!.]* www/assets
 
   node:
     image: node:alpine
