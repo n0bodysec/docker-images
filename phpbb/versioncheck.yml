@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  phpbb:
+    depends_on: [ 'versioncheck' ]
+    links: [ 'versioncheck:version.phpbb.com' ]
+    # extra_hosts: [ 'version.phpbb.com:127.0.0.1' ]
+
+  versioncheck:
+    image: node:alpine
+    restart: unless-stopped
+    expose: [ '80' ]
+    command: npx --yes http-server -p 80 --proxy https://version.phpbb.com

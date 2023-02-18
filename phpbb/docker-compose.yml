@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  mariadb:
+    image: mariadb
+    restart: unless-stopped
+    expose: [ '3306' ]
+    env_file: [ '.env' ]
+    volumes: [ '${DOCKER_MARIADB_VOLUME}:/var/lib/mysql' ]
+
+  phpbb:
+    image: docker.io/bitnami/phpbb
+    restart: unless-stopped
+    expose: [ '8080', '8443' ]
+    ports: [ '8080:8080', '8443:8443' ]
+    env_file: [ '.env' ]
+    volumes: [ '${DOCKER_PHPBB_VOLUME}:/bitnami/phpbb' ]
+    depends_on: [ 'mariadb' ]
+
+volumes:
+  mariadb_data:
+  phpbb_data:
