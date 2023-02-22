@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  db:
+    image: mongo:bionic
+    restart: unless-stopped
+    expose: [ '27017' ]
+    networks: [ 'default' ]
+    env_file: [ '.env' ]
+    volumes: [ './data/mongodb/:/data/db' ]
+    profiles: [ 'mongodb' ]

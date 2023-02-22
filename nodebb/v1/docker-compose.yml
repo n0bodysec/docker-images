@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  app:
+    image: node:alpine
+    restart: unless-stopped
+    expose: [ '4567' ]
+    networks: [ 'default' ]
+    env_file: [ '.env' ]
+    depends_on: [ 'db' ]
+    volumes: [ './data/nodebb:/app' ]
+    user: node
+    working_dir: /app
+    entrypoint: ./nodebb
+    command: start
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    expose: [ '5432' ]
+    networks: [ 'default' ]
+    env_file: [ '.env' ]
+    volumes: [ './data/postgres:/var/lib/postgresql/data' ]
+
+  install:
+    image: node:alpine
+    profiles: [ 'dev' ]
+    volumes: [ './data/nodebb:/app' ]
+    working_dir: /app
+    environment:
+      CHECKOUT: ${CHECKOUT:-master}
+      SETUP: ${SETUP}
+    command:
+      - /bin/sh
+      - -c
+      - |
+        apk add --no-cache git
+        git clone https://github.com/NodeBB/NodeBB.git .
+        git checkout $CHECKOUT
+        cp install/package.json .
+        npm install --only=prod
+        test -n "${SETUP}" && ./nodebb setup
+        chown -R node:node *
+
+  node:
+    image: node:alpine
+    profiles: [ 'dev' ]
+    volumes: [ './data/nodebb:/app' ]
+    user: node
+    working_dir: /app
