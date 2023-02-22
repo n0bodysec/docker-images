@@ -3,7 +3,7 @@ version: '3.9'
 services:
   fosscord:
     depends_on: [ 'postgres' ]
-    command: sh -c 'wait-for postgres:5432 -- npm --prefix src run start:bundle'
+    command: sh -c 'wait-for postgres:5432 -- npm --prefix src run start'
 
   postgres:
     image: postgres:latest

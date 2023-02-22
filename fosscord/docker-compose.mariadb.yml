@@ -3,7 +3,7 @@ version: '3.9'
 services:
   fosscord:
     depends_on: [ 'mariadb' ]
-    command: sh -c 'wait-for mariadb:3306 -- npm --prefix src run start:bundle'
+    command: sh -c 'wait-for mariadb:3306 -- npm --prefix src run start'
 
   mariadb:
     image: mariadb:latest
