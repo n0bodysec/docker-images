@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  tor:
+    build: tor/
+    restart: unless-stopped
+    volumes: [ './tor/torrc:/etc/tor/torrc:ro' ]
+
+  toxic:
+    image: alpine:edge
+    restart: unless-stopped
+    depends_on: [ 'tor' ]
+    volumes:
+      - './.data/tox/:/root/.config/tox/'
+      - './.data/toxic/:/toxic/'
+    command:
+      - /bin/sh
+      - -c
+      - |
+        apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ toxic
+        printf "#!/bin/sh\n\ncd /toxic\ntoxic -t -p tor 9050\n" > /toxic/toxic.sh
+        chmod +x /toxic/toxic.sh
+        sleep infinity
