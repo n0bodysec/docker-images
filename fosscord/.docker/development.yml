@@ -1,0 +1,25 @@
+services:
+  fosscord:
+    build:
+      context: .docker
+      target: development
+    volumes:
+      - '../.data/fosscord:/app'
+
+  setup:
+    image: fosscord
+    profiles: [ 'dev' ]
+    working_dir: /app
+    volumes: [ '../.data/fosscord:/app' ]
+    environment:
+      BRANCH: ${BRANCH:-master}
+    command:
+      - /bin/sh
+      - -c
+      - |
+        git clone https://github.com/fosscord/fosscord-server.git src
+        cd src
+        git checkout $$BRANCH
+        npm install
+        npm i erlpack pg mysql sqlite3 bcrypt canvas
+        npm run setup

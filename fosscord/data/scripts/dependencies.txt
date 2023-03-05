@@ -1,6 +1,0 @@
-@yukikaze-bot/erlpack
-pg
-mysql
-sqlite3
-bcrypt
-canvas

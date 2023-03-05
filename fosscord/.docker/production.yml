@@ -1,0 +1,8 @@
+services:
+  fosscord:
+    build:
+      context: .docker
+      target: production
+      args:
+        BRANCH: ${BRANCH:-master}
+    volumes: [ '../.data/fosscord:/app/data' ]

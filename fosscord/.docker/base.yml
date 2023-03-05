@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  fosscord:
+    image: fosscord
+    restart: unless-stopped
+    ports: [ '3001-3004:3001-3004' ]
+    expose: [ '3001', '3002', '3003', '3004' ]
+    env_file: [ '../.env' ]

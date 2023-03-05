@@ -8,6 +8,6 @@ services:
   mariadb:
     image: mariadb:latest
     restart: unless-stopped
-    # ports: [ '3306:3306' ]
-    env_file: [ '.env' ]
-    volumes: [ './data/mariadb/:/var/lib/mysql' ]
+    expose: [ '3306' ]
+    env_file: [ '../.env' ]
+    volumes: [ '../.data/mariadb:/var/lib/mysql' ]

@@ -1,40 +1,50 @@
 # fosscord
 
-Fosscord Server Development Docker
-
-## Table of contents
-
-- [🃏 Features](#-features)
-- [🚀 Deploy](#-deploy)
-- [📜 Notice](#-notice)
+Plug-and-Play installation of Fosscord. You can choose between two available images.
 
 ## 🃏 Features
 
-- Develop without installing dependencies.
-- Run isolated instances (and multiple instances too!).
+- Start your own instance with no effort.
+- Isolated instances.
+- Multiple instances support.
 - Secured environment.
 
-## 🚀 Deploy
+## 🚀 Deploy (production)
 
-1. Create a `docker-compose.override.yml` file and edit it to suit your needs (***optional***).
-2. Copy `.env.example` to `.env` and edit it accordingly.
-3. Clone `fosscord-server` into `data/fosscord/src`.
-5. Run `docker compose run fosscord sh ../scripts/update.sh` or setup Fosscord manually.
-6. Run `docker compose up -d`.
+1. Edit the `.env` file to suit your needs.
+> You **MUST** set `STORAGE_LOCATION` and `DATABASE` (if using SQLite) env vars to the following, if you are planning to use this deployment method.
 
-**Please note that to run the PostgreSQL or MariaDB container, you must specify its compose file.**  
-Example: `docker compose -f docker-compose.yml -f docker-compose.postgres.yml up -d`.
-
-```sh
-git clone https://github.com/n0bodysec/docker-images.git
-cd docker-images/fosscord/
-cp .env.example .env
-git clone https://github.com/fosscord/fosscord-server.git data/fosscord/src/
-docker compose run fosscord sh ../scripts/update.sh
-docker compose up -d
+```
+STORAGE_LOCATION=/app/data/files
+DATABASE=/app/data/db.sqlite
 ```
 
-## 📜 Notice
+2. Run the following command to start a ready to use instance. The image automatically downloads and setup the latest version of Fosscord.
 
-- Fosscord is not working properly with MariaDB at this moment. Please use PostgreSQL or SQLite instead.
-- It is possible to use docker named volumes instead of bind mount, but you need to edit `docker-compose.override.yml` accordingly.
+```sh
+docker compose -f .docker/base.yml -f .docker/production.yml up -d
+```
+
+> To update your Fosscord instance or the base image, you MUST re-build the image.
+
+## 🚀 Deploy (development)
+
+If you prefer to setup the server manually, or want to use a custom version, you should choose this method instead. You will build a base image that contains the minimum requirements to run, then you can build Fosscord manually or you can run the built-in configuration script!
+
+1. Edit the `.env` file to suit your needs.
+2. Run the following commands:
+```sh
+docker compose -f .docker/base.yml -f .docker/development.yml build
+docker compose -f .docker/base.yml -f .docker/development.yml run setup
+docker compose -f .docker/base.yml -f .docker/development.yml up -d
+```
+
+## ❓ MariaDB and PostgreSQL
+
+You can deploy both production and development images using MariaDB or PostgreSQL instead of the built-in SQLite database. To do this, add `-f .docker/mariadb.yml` or `-f .docker/postgres.sql` to all your docker compose commands.
+
+Example: `docker compose -f .docker/base.yml -f .docker/production.yml -f .docker/postgres.yml up -d`
+
+## 📜 Notes
+
+- Remember to update your .env file.
