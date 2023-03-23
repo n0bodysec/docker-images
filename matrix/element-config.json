@@ -1,40 +1,38 @@
 {
-	"default_server_config": {
-		"m.homeserver": {
-			"base_url": "http://localhost:8008"
-		},
-		"m.identity_server": {
-			"base_url": "http://localhost/identity-server"
-		}
-	},
-	"disable_custom_urls": false,
-	"disable_guests": false,
-	"disable_login_language_selector": false,
-	"disable_3pid_login": true,
-	"brand": "Element",
-	"show_labs_settings": false,
-	"features": {},
-	"default_federate": true,
-	"default_theme": "dark",
-	"setting_defaults": {
-		"breadcrumbs": true
-	},
-	"room_directory": {
-		"servers": [
-			"matrix.org"
-		]
-	},
-	"enable_presence_by_hs_url": {
-		"https://matrix.org": false,
-		"https://matrix-client.matrix.org": false
-	},
-	"integrations_ui_url": "https://localhost/integrations-server",
-	"integrations_rest_url": "https://localhost/integrations-server",
-	"integrations_widgets_urls": [
-		"https://localhost/integrations-server"
-	],
-	"integrations_jitsi_widget_url": "https://localhost/integrations-server",
-	"jitsi": {
-		"preferred_domain": "https://localhost/jitsi"
-	}
+    "default_server_config": {
+        "m.homeserver": {
+            "base_url": "http://localhost:8008",
+            "server_name": "My homeserver"
+        },
+        "m.identity_server": {
+            "base_url": "https://vector.im"
+        }
+    },
+    "disable_custom_urls": true,
+    "brand": "Element",
+    "integrations_ui_url": "https://scalar.vector.im/",
+    "integrations_rest_url": "https://scalar.vector.im/api",
+    "integrations_widgets_urls": [
+        "https://scalar.vector.im/_matrix/integrations/v1",
+        "https://scalar.vector.im/api",
+        "https://scalar-staging.vector.im/_matrix/integrations/v1",
+        "https://scalar-staging.vector.im/api",
+        "https://scalar-staging.riot.im/scalar/api"
+    ],
+    "show_labs_settings": true,
+    "default_federate": false,
+    "default_theme": "dark",
+    "enable_presence_by_hs_url": {
+        "https://matrix.org": false,
+        "https://matrix-client.matrix.org": false
+    },
+    "jitsi": {
+        "preferred_domain": "meet.jit.si"
+    },
+    "element_call": {
+        "url": "https://call.element.io",
+        "participant_limit": 8,
+        "brand": "Element Call"
+    },
+    "map_style_url": "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx"
 }

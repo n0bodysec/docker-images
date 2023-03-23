@@ -1,57 +1,62 @@
-version: '3.8'
+version: '3.9'
 
 services:
   synapse:
-    # first run: docker compose run synapse generate && docker compose down && docker compose --profile element up -d
-    container_name: synapse
     image: matrixdotorg/synapse:latest
     restart: unless-stopped
     hostname: ${SYNAPSE_SERVER_NAME}
-    ports:
-      - '${DOCKER_SYNAPSE_PORT_ON_HOST:-8008}:${SYNAPSE_HTTP_PORT:-8008}'
-      - '${DOCKER_SYNAPSE_TLS_PORT_ON_HOST:-8448}:8448'
-    volumes: [ './data/synapse:/data' ]
-    networks: [ 'web', 'backend' ]
-    depends_on: [ 'postgres' ]
+    expose: [ '8008', '8448' ]
+    volumes: [ './.data/synapse:/data' ]
+    networks: [ 'backend' ]
+    depends_on: [ 'db' ]
     environment:
       # all env variables: https://github.com/matrix-org/synapse/blob/develop/docker/conf/homeserver.yaml
-      - SYNAPSE_SERVER_NAME=${SYNAPSE_SERVER_NAME}
-      - SYNAPSE_REPORT_STATS=${SYNAPSE_REPORT_STATS:-no}
-      - SYNAPSE_HTTP_PORT=${SYNAPSE_HTTP_PORT:-8008}
-      - SYNAPSE_NO_TLS=${SYNAPSE_NO_TLS:-0}
-      - SYNAPSE_REGISTRATION_SHARED_SECRET=${SYNAPSE_REGISTRATION_SHARED_SECRET}
-      - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-synapse}
-      - POSTGRES_USER=${POSTGRES_USER:-synapse}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-sup3rs3cret}
+      - SYNAPSE_SERVER_NAME
+      - SYNAPSE_REPORT_STATS
+      - SYNAPSE_NO_TLS
+      - SYNAPSE_REGISTRATION_SHARED_SECRET
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
 
-  postgres:
-    container_name: synapse_postgres
+  db:
     image: postgres:alpine
     restart: unless-stopped
-    volumes: [ './data/postgres:/var/lib/postgresql/data' ]
+    expose: [ '5432' ]
+    volumes: [ './.data/db:/var/lib/postgresql/data' ]
     networks: [ 'backend' ]
     environment:
-      - POSTGRES_DB=${POSTGRES_DB:-synapse}
-      - POSTGRES_USER=${POSTGRES_USER:-synapse}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-sup3rs3cret}
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
 
   element:
-    container_name: synapse_element
     image: vectorim/element-web:latest
     restart: unless-stopped
-    ports: [ '${DOCKER_ELEMENT_PORT_ON_HOST:-8080}:80' ]
+    expose: [ '80' ]
     volumes: [ './element-config.json:/app/config.json:ro' ]
     networks: [ 'web' ]
     profiles: [ 'element' ]
 
-  admin:
-    container_name: synapse_admin
+  synadmin:
     image: awesometechnologies/synapse-admin:latest
     restart: unless-stopped
-    ports: [ '${DOCKER_SYNAPSE_ADMIN_PORT_ON_HOST:-8081}:80' ]
+    expose: [ '80' ]
     networks: [ 'web' ]
     profiles: [ 'tools' ]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    expose: [ '80', '443' ]
+    volumes: [ './.data/pgadmin:/var/lib/pgadmin' ]
+    networks: [ 'backend' ]
+    profiles: [ 'tools' ]
+    depends_on: [ 'db' ]
+    environment:
+      # all env variables: https://www.pgadmin.org/docs/pgadmin4/development/container_deployment.html
+      - PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD
 
 networks:
   web:

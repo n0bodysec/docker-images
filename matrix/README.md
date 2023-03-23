@@ -1,13 +1,12 @@
-# Matrix Synapse & Element Web
+# Matrix
 
-Deploy Matrix homeserver based on Synapse and optionally Element web.
+Deploy a Matrix Synapse homeserver and optionally an Element web server.
 
 ## 🃏 Features
 
-- Ready to deploy synapse image.
 - Fully configurable through env variables.
-- Customized Element web image.
-- Optional Synapse Admin Web Panel (`docker compose --profile tools`).
+- Optional Synapse admin web panel (`docker compose --profile tools`).
+- Optional PostgreSQL admin web panel (`docker compose --profile tools`).
 
 ## 🚀 Deploy
 
@@ -19,7 +18,7 @@ Deploy Matrix homeserver based on Synapse and optionally Element web.
 
 ## 📜 Notes
 
-- Some Element endpoints have been changed to **future** self-hosted alternatives (see **element-config.json**).
+You can deploy your own open source alternatives of the services used:
 - Open source Integration Manager: [Dimension](https://github.com/turt2live/matrix-dimension).
-- Open source Identify Server: [Gridify Server](https://gitlab.com/kamax-io/software/gridify/server) (or [this](https://github.com/kamax-matrix/mxisd) **deprecated** version).
+- Open source Identify Server: [Gridify Server](https://gitlab.com/kamax-lu/software/gridify/server) (or [this](https://github.com/kamax-matrix/mxisd) **deprecated** version wich has been forked [here](https://github.com/ma1uta/ma1sd)).
 - Self-hosted Jitsi: [Jitsi Meet](https://github.com/jitsi/jitsi-meet).
