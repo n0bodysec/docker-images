@@ -22,7 +22,7 @@ jobs:
     steps:
     - name: Copy alpine-s6
       if: "contains(github.event.head_commit.message, 'alpine-s6')"
-      uses: andstor/copycat-action@v3
+      uses: andstor/copycat-action@c2b0316e9ab883478a4a7d40a4fcb03d17f281aa
       with:
         personal_token: ${{ secrets.PERSONAL_TOKEN }}
         src_path: baseimage/alpine-s6
@@ -36,7 +36,7 @@ jobs:
 
     - name: Copy stremio
       if: "contains(github.event.head_commit.message, 'stremio')"
-      uses: andstor/copycat-action@v3
+      uses: andstor/copycat-action@c2b0316e9ab883478a4a7d40a4fcb03d17f281aa
       with:
         personal_token: ${{ secrets.PERSONAL_TOKEN }}
         src_path: /stremio
