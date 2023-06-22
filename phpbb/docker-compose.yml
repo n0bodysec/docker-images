@@ -1,21 +1,36 @@
 version: '3.9'
 
 services:
+  phpbb:
+    image: bitnami/phpbb
+    restart: unless-stopped
+    depends_on: [ 'mariadb' ]
+    expose: [ '8080', '8443' ]
+    ports: [ '8080:8080' ]
+    volumes: [ '${DOCKER_PHPBB_VOLUME}:/bitnami/phpbb' ]
+    env_file: [ '.env' ]
+
   mariadb:
     image: mariadb
     restart: unless-stopped
+    user: mysql
     expose: [ '3306' ]
-    env_file: [ '.env' ]
     volumes: [ '${DOCKER_MARIADB_VOLUME}:/var/lib/mysql' ]
+    environment:
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
 
-  phpbb:
-    image: docker.io/bitnami/phpbb
+  phpmyadmin:
+    image: phpmyadmin
     restart: unless-stopped
-    expose: [ '8080', '8443' ]
-    ports: [ '8080:8080', '8443:8443' ]
-    env_file: [ '.env' ]
-    volumes: [ '${DOCKER_PHPBB_VOLUME}:/bitnami/phpbb' ]
+    profiles: [ 'admin' ]
     depends_on: [ 'mariadb' ]
+    expose: [ '80' ]
+    ports: [ '8081:80' ]
+    environment:
+      PMA_ARBITRARY: 1
 
 volumes:
   mariadb_data:
