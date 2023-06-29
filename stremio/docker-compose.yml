@@ -3,13 +3,19 @@ version: '3.9'
 services:
   stremio:
     image: n0bodysec/stremio
+    # build: .
     ports:
       - '11470:11470'
+      - '12470:12470'
       - '8080:8080'
       - '8081:8081'
     volumes:
       - ./data/:/root/.stremio-server
       - ./files/patches.js:/srv/stremio/web/patches.js:ro
       - ./files/patches.js:/srv/stremio/shell/patches.js:ro
-    env_file:
-      - .env
+      - ./files/patches:/srv/stremio/patches:ro
+    environment:
+      WORKDIR: /srv/stremio # important! used for patches
+      APPLY_PATCHES: 1
+      FIX_UNSUPPORTED_MEDIA: 1
+      NO_CORS: 1
