@@ -1,11 +1,11 @@
 # Private Data
 .data/
 .env
+docker-compose.override.yml
 
 # Yukon Sources
 client/
 server/
 
 # Nginx root files (client container)
-www/*
-!www/.gitkeep
+www/

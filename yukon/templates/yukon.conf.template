@@ -1,4 +1,5 @@
 server {
+   listen 8080;
    server_name {{ (parseUrl .Env.WEB_HOSTNAME).Host }};
 
    root /usr/share/nginx/html;
@@ -22,8 +23,6 @@ server {
       proxy_set_header Connection "Upgrade";
       proxy_set_header Host $host;
    }
-
-   # add more worlds if you want to
 
    # example config for a php container
    # location /create {
