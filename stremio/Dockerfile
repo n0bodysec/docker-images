@@ -5,7 +5,8 @@ FROM node:alpine AS builder
 
 # build args
 ARG SERVER_VERSION=master
-ARG DOWNLOAD_URL=https://dl.strem.io/four/${SERVER_VERSION}
+ARG SERVER_BUILD=desktop
+ARG DOWNLOAD_URL=https://dl.strem.io/server/${SERVER_VERSION}/${SERVER_BUILD}
 
 WORKDIR /srv/stremio
 RUN apk add --no-cache git wget dos2unix
@@ -22,7 +23,7 @@ WORKDIR /srv/stremio/stremio-web
 RUN npm ci && npm run build && cp -r build ../dist/web
 
 WORKDIR /srv/stremio/dist/server
-RUN wget $DOWNLOAD_URL/server.js $DOWNLOAD_URL/stremio.asar && cp server.js server.js.bak
+RUN wget $DOWNLOAD_URL/server.js && cp server.js server.js.bak
 
 ##########################################################################
 
@@ -30,7 +31,7 @@ RUN wget $DOWNLOAD_URL/server.js $DOWNLOAD_URL/stremio.asar && cp server.js serv
 FROM node:alpine
 
 WORKDIR /srv/stremio
-RUN apk add --no-cache ffmpeg
+RUN apk add --no-cache ffmpeg dos2unix
 COPY --from=builder /srv/stremio/dist ./
 RUN npm install -g http-server
 

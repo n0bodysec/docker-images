@@ -14,7 +14,7 @@ if [[ ${APPLY_PATCHES:-0} -eq 1 ]]; then
 		echo "Applying patches..."
 		for file in patches/*.sh; do
 			echo "Executing patch $file"
-			sh $file
+			cat $file | dos2unix | sh
 		done
 	fi
 else

@@ -3,7 +3,10 @@ version: '3.9'
 services:
   stremio:
     image: n0bodysec/stremio
-    # build: .
+    # build:
+    #   context: .
+    #   args:
+    #     SERVER_VERSION: v4.20.3
     ports:
       - '11470:11470'
       - '12470:12470'
@@ -17,5 +20,5 @@ services:
     environment:
       WORKDIR: /srv/stremio # important! used for patches
       APPLY_PATCHES: 1
-      FIX_UNSUPPORTED_MEDIA: 1
+      FIX_UNSUPPORTED_MEDIA: 0
       NO_CORS: 1
